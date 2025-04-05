@@ -1,0 +1,140 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_LEN 100
+#define MAX_PLANTS 100
+typedef struct {
+    
+    char botanicalName[MAX_LEN];
+    char commonName[MAX_LEN];
+    char habitat[MAX_LEN];
+    char medicinalUses[MAX_LEN];
+    char cultivation[MAX_LEN];
+    char ayushSystem[MAX_LEN];
+    char region[MAX_LEN];
+    char plantType[MAX_LEN]; 
+} MedicinalPlant;
+void displayPlant(MedicinalPlant plant) {
+    printf("\n-------------------------------------------\n");
+    printf("🌿 Botanical Name : %s\n", plant.botanicalName);
+    printf("🪴 CommonName : %s\n", plant.commonName);
+    printf("🌍 Habitat : %s\n", plant.habitat);
+    printf("💊 Medicinal Uses : %s\n", plant.medicinalUses);
+    printf("🌱 Cultivation : %s\n", plant.cultivation);
+    printf("📚 AYUSH System : %s\n", plant.ayushSystem);
+    printf("📌 Region : %s\n", plant.region);
+    printf("🔖 Plant Type : %s\n", plant.plantType);
+    printf("\n-------------------------------------------------------------\n");
+}
+void addPlant(MedicinalPlant *plants, int *count) {
+    if(*count >= MAX_PLANTS) {
+        printf("⚠ Garden is full! cannot add more plants.\n");
+        return;
+    }
+    printf("\nEnter details of medicinal plant:\n");
+    printf("Botanical Name: ");
+    fgets(plants[*count].botanicalName, MAX_LEN, stdin);
+    strtok(plants[*count].botanicalName, "\n");
+    printf("common Name: ");
+    fgets(plants[*count].commonName, MAX_LEN, stdin);
+    strtok(plants[*count].commonName, "\n");
+    printf("Habitat: ");
+    fgets(plants[*count].habitat, MAX_LEN, stdin);
+    strtok(plants[*count].habitat, "\n");
+    printf("Medicinal Uses: ");
+    fgets(plants[*count].medicinalUses, MAX_LEN, stdin);
+    strtok(plants[*count].medicinalUses, "\n");
+    printf("Cultivation: ");
+    fgets(plants[*count].cultivation, MAX_LEN, stdin);
+    strtok(plants[*count].cultivation, "\n");
+    printf("AYUSH System: ");
+    fgets(plants[*count].ayushSystem, MAX_LEN, stdin);
+    strtok(plants[*count].ayushSystem, "\n");
+    printf("Region: ");
+    fgets(plants[*count].region, MAX_LEN, stdin);
+    strtok(plants[*count].region, "\n");
+    printf("Plant Type (e.g., Herb, Tree): ");
+    fgets(plants[*count].plantType, MAX_LEN, stdin);
+    strtok(plants[*count].plantType, "\n");
+    (*count)++;
+    printf("✅  Plant added successfully!\n");
+    }
+    void viewPlants(MedicinalPlant *plants, int count) {
+        if(count == 0) {
+            printf("\n🌱 No plants to show yet.\n");
+            return;
+        }
+        for(int i=0;i<count;i++) {
+            displayPlant(plants[i]);
+        }
+    }
+    void searchByUse(MedicinalPlant *plants, int count) {
+        char keyword[MAX_LEN];
+        int found = 0;
+        printf("\nEnter keyword for medicinal use: ");
+        fgets(keyword, MAX_PLANTS, stdin);
+        strtok(keyword, "\n");
+        for(int i=0;i<count;i++) {
+            if(strstr(plants[i].medicinalUses, keyword)) {
+                displayPlant(plants[i]);
+                found = 1;
+            }
+        }
+        if(!found) {
+            printf("❌  No  plants  found for that medicinal  use.\n");       
+            }
+        }
+        void filterByAyush(MedicinalPlant *plants, int count) {
+            char system[MAX_PLANTS];
+            int found = 0;
+            printf("\nEnter AYUSH system(Ayurveda, siddha, etc.): ");
+            fgets(system, MAX_LEN, stdin);
+            strtok(system, "\n");
+            for(int i=0;i<count;i++) {
+                if(strcasecmp(plants[i].ayushSystem, system) == 0) {
+                    displayPlant(plants[i]);
+                    found = 1;
+                }
+            }
+            if(!found) {
+                printf("❌  No plants found for AYUSH system: %s\n", system);
+            }
+        }
+        int main() {
+            MedicinalPlant plants[MAX_PLANTS];
+            int count = 0;
+            int choice;
+            printf("🌿 Welcome to the virtual Herbal Garden🌿\n");
+            do{
+                printf("\n=========== MENU ===========\n");
+                printf("1. Add Medicinal Plant\n");
+                printf("2. View All Plants\n");
+                printf("3. Search by Medicinal Use\n");
+                printf("4. Filter by AYUSH System\n");
+                printf("5. Exit\n");
+                printf("========================================\n");
+                printf("Enter your Choice: ");
+                scanf("%d", &choice);
+                getchar();
+                switch(choice) {
+                    case 1:
+                     addPlant(plants, &count);
+                     break;
+                    case 2:
+                     viewPlants(plants, count);
+                     break;
+                    case 3:
+                     searchByUse(plants, count);
+                     break;
+                    case 4:
+                     filterByAyush(plants, count);
+                     break;
+                    case 5:
+                     printf("\n👋 Thank you for visiting the Virtual Herbal Garden!\n");
+                     break;
+                    default:
+                     printf("❗ Invalid option. Try again.\n");
+                }
+            } while(choice != 5);
+            return 0;
+        }
